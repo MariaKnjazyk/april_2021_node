@@ -1,0 +1,1 @@
+{name: 'Petja', sex: 'male'}
