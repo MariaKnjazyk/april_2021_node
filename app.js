@@ -56,7 +56,6 @@ function readDirRec(pathDir) {
                                     console.log(err);
                                 }
                             });
-
                         }else if(data.toString().includes('male')){
                             fs.rename(pathFile, path.join(pathMaleDir, fileName), err => {
                                 if (err) {
