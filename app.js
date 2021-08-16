@@ -45,7 +45,6 @@ function readDirRec(pathDir) {
                 if (stats.isDirectory()) {
                     readDirRec(pathFile);
                 } else {
-
                     fs.readFile(pathFile, (err, data) => {
                         if (err) {
                             console.log(err);
