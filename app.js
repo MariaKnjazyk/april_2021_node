@@ -18,6 +18,7 @@ app.set('view engine', '.hbs');
 app.engine('.hbs', expressHbs({defaultLayout: false}));
 app.set('views', path.join(__dirname, 'static'));
 
+
 app.get('/ping', (req, res) => {
     res.json('Pong');
 });
@@ -31,10 +32,10 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    const {name, password} = req.body;
+    const {mail, password} = req.body;
     for (const user of users) {
-        if (user.name === name && user.password === password) {
-            res.status(200).redirect('/users');
+        if (user.mail === mail && user.password === password) {
+            res.status(200).redirect(`/users/${user.id}`);
         }
     }
     res.status(404).render('login_unsuccessful');
@@ -45,22 +46,20 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-    const {name, age, password} = req.body;
-    if (!name || !age || !password) {
+    const {mail, password} = req.body;
+    if (!mail || !password) {
         res.status(400).render('register', {info: 'fill in all fields'});
         return;
     }
-    if (age < 0) {
-        res.status(400).render('register', {info: 'wrong age'});
-        return;
-    }
     for (const user of users) {
-        if (user.name === name) {
-            res.status(400).render('register', {info: 'user with this name already exists'});
+        if (user.mail === mail) {
+            res.status(400).render('register', {info: 'user with this mail already exists'});
             return;
         }
     }
-    users.push({name, age, password});
+    const lastId = users[users.length - 1].id;
+    const id = lastId + 1;
+    users.push({id, mail, password});
     fs.writeFile(path.join(__dirname, 'db', 'users.js'), `module.exports = ${JSON.stringify(users)}`, err => {
         console.log(err);
     });
@@ -72,14 +71,14 @@ app.get('/users', (req, res) => {
     res.render('users', {users});
 });
 
-app.get('/users/:userName', (req, res) => {
-    const {userName} = req.params;
-    const currentUser = users.find(user => user.name === userName);
+app.get('/users/:userId', (req, res) => {
+    const {userId} = req.params;
+    const currentUser = users.find(user => +user.id === +userId);
     if (!currentUser) {
         res.status(404).end('user not found');
         return;
     }
-    res.json(currentUser);
+    res.render('user', {currentUser});
 });
 
 

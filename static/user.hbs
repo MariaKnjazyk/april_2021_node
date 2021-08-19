@@ -9,12 +9,10 @@
 </head>
 <body>
 
-<form action="/login" method="post">
-    <label>Mail<input type="text" name="mail"></label>
-    <br>
-    <label>Password<input type="text" name="password"></label>
-    <br>
-    <button>submit</button>
+<h2>{{currentUser.id}} {{currentUser.mail}} {{currentUser.password}}</h2>
+<hr>
+<form action="/users">
+    <button>Show all users</button>
 </form>
 
 </body>
