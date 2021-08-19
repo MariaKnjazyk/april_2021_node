@@ -37,7 +37,7 @@ app.post('/login', (req, res) => {
             res.status(200).redirect('/users');
         }
     }
-    res.status(404).render('login', {info: 'wrong name or password'});
+    res.status(404).render('login_unsuccessful');
 });
 
 app.get('/register', (req, res) => {
