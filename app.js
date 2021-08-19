@@ -36,11 +36,10 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
     const {mail, password} = req.body;
 
-    for (const user of users) {
-        if (user.mail === mail && user.password === password) {
-            res.status(200).redirect(`/users/${user.id}`);
-            return;
-        }
+    const logUser = users.find(user => user.mail === mail && user.password === password);
+    if (logUser) {
+        res.status(200).redirect(`/users/${logUser.id}`);
+        return;
     }
 
     res.status(404).render('login_unsuccessful');
@@ -58,11 +57,10 @@ app.post('/register', (req, res) => {
         return;
     }
 
-    for (const user of users) {
-        if (user.mail === mail) {
-            res.status(400).render('register', {info: 'user with this mail already exists'});
-            return;
-        }
+    const isReg = users.some(user => user.mail === mail);
+    if (isReg) {
+        res.status(400).render('register', {info: 'user with this mail already exists'});
+        return;
     }
 
     const lastId = users[users.length - 1].id;
