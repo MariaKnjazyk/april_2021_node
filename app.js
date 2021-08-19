@@ -1,75 +1,89 @@
+const express = require('express');
+const expressHbs = require('express-handlebars');
 const fs = require('fs');
 const path = require('path');
 
+const {PORT} = require('./config/variables');
+const users1 = require('./db/users');
 
-const ignoreted = ['.idea', 'app.js', 'package.json', 'correct_location'];
-const pathMaleDir=path.join(__dirname, 'correct_location', '20_00');
-const pathFemaleDir=path.join(__dirname, 'correct_location', '18_00');
+const users = JSON.parse(JSON.stringify(users1));
 
-fs.mkdir(pathFemaleDir, {recursive: true}, err => {
-    if (err) {
-        console.log(err);
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+app.use(express.static(path.join(__dirname, 'static')));
+app.set('view engine', '.hbs');
+app.engine('.hbs', expressHbs({defaultLayout: false}));
+app.set('views', path.join(__dirname, 'static'));
+
+app.get('/ping', (req, res) => {
+    res.json('Pong');
+});
+
+app.get('/', (req, res) => {
+    res.render('home');
+});
+
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+app.post('/login', (req, res) => {
+    const {name, password} = req.body;
+    for (const user of users) {
+        if (user.name === name && user.password === password) {
+            res.status(200).redirect('/users');
+        }
     }
-})
-fs.mkdir(pathMaleDir, {recursive: true}, err => {
-    if (err) {
-        console.log(err);
-    }
-})
+    res.status(404).render('login', {info: 'wrong name or password'});
+});
 
-function readDirRec(pathDir) {
-    fs.readdir(pathDir, (err, files) => {
-        if (err) {
-            console.log(err);
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+app.post('/register', (req, res) => {
+    const {name, age, password} = req.body;
+    if (!name || !age || !password) {
+        res.status(400).render('register', {info: 'fill in all fields'});
+        return;
+    }
+    if (age < 0) {
+        res.status(400).render('register', {info: 'wrong age'});
+        return;
+    }
+    for (const user of users) {
+        if (user.name === name) {
+            res.status(400).render('register', {info: 'user with this name already exists'});
             return;
         }
-        files.forEach(fileName => {
-            if (pathDir === __dirname) {
-                let ign=false;
-                for (const ig of ignoreted) {
-                    if (fileName === ig) {
-                        ign=true;
-                        break;
-                    }
-                }
-                if(ign){
-                    return;
-                }
-            }
-            const pathFile = path.join(pathDir, fileName);
-            fs.stat(pathFile, (err, stats) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                if (stats.isDirectory()) {
-                    readDirRec(pathFile);
-                } else {
-                    fs.readFile(pathFile, (err, data) => {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        }
-                        if(data.toString().includes('female')){
-                            fs.rename(pathFile, path.join(pathFemaleDir, fileName), err => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            });
-                        }else if(data.toString().includes('male')){
-                            fs.rename(pathFile, path.join(pathMaleDir, fileName), err => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            });
-                        }
-                    });
-                }
-            })
-        })
+    }
+    users.push({name, age, password});
+    fs.writeFile(path.join(__dirname, 'db', 'users.js'), `module.exports = ${JSON.stringify(users)}`, err => {
+        console.log(err);
     });
+    res.status(201).render('register_success');
+});
 
-}
 
-readDirRec(__dirname);
+app.get('/users', (req, res) => {
+    res.render('users', {users});
+});
+
+app.get('/users/:userName', (req, res) => {
+    const {userName} = req.params;
+    const currentUser = users.find(user => user.name === userName);
+    if (!currentUser) {
+        res.status(404).end('user not found');
+        return;
+    }
+    res.json(currentUser);
+});
+
+
+app.listen(PORT, () => {
+    console.log('App listen', PORT);
+});
 
