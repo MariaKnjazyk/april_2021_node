@@ -33,11 +33,13 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
     const {mail, password} = req.body;
+
     for (const user of users) {
         if (user.mail === mail && user.password === password) {
             res.status(200).redirect(`/users/${user.id}`);
         }
     }
+
     res.status(404).render('login_unsuccessful');
 });
 
@@ -47,22 +49,26 @@ app.get('/register', (req, res) => {
 
 app.post('/register', (req, res) => {
     const {mail, password} = req.body;
+
     if (!mail || !password) {
         res.status(400).render('register', {info: 'fill in all fields'});
         return;
     }
+
     for (const user of users) {
         if (user.mail === mail) {
             res.status(400).render('register', {info: 'user with this mail already exists'});
             return;
         }
     }
+
     const lastId = users[users.length - 1].id;
     const id = lastId + 1;
     users.push({id, mail, password});
     fs.writeFile(path.join(__dirname, 'db', 'users.js'), `module.exports = ${JSON.stringify(users)}`, err => {
         console.log(err);
     });
+
     res.status(201).render('register_success');
 });
 
@@ -74,10 +80,12 @@ app.get('/users', (req, res) => {
 app.get('/users/:userId', (req, res) => {
     const {userId} = req.params;
     const currentUser = users.find(user => +user.id === +userId);
+
     if (!currentUser) {
         res.status(404).end('user not found');
         return;
     }
+
     res.render('user', {currentUser});
 });
 
