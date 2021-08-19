@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const {PORT} = require('./config/variables');
-const users1 = require('./db/users');
+const usersFromFile = require('./db/users');
 
-const users = JSON.parse(JSON.stringify(users1));
+const users = JSON.parse(JSON.stringify(usersFromFile));
 
 const app = express();
 
