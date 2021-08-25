@@ -6,22 +6,12 @@ const writeFileFsPromisify = util.promisify(fs.writeFile);
 
 module.exports = {
     getUsersFromFile: async (pathUsers) => {
-        try {
-            const usersData = await readFileFsPromisify(pathUsers);
+        const usersData = await readFileFsPromisify(pathUsers);
 
-            return JSON.parse(usersData.toString());
-        } catch (e) {
-            console.log(e);
-
-            return [];
-        }
+        return JSON.parse(usersData.toString());
     },
 
     writeUsersInFile: async (pathUsers, users) => {
-        try {
-            await writeFileFsPromisify(pathUsers, JSON.stringify(users));
-        } catch (e) {
-            console.log(e);
-        }
+        await writeFileFsPromisify(pathUsers, JSON.stringify(users));
     }
 };
