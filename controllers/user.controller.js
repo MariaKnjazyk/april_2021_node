@@ -1,8 +1,8 @@
-const {PATH_USERS} = require("../config/variables");
+const {PATH_USERS} = require('../config/variables');
 const {
     getUsersFromFile,
     writeUsersInFile
-} = require("../services/user.service");
+} = require('../services/user.service');
 
 module.exports = {
     createUser: async (req, res) => {
@@ -12,6 +12,7 @@ module.exports = {
 
         if (!mail || !password) {
             res.status(400).render('register', {info: 'fill in all fields'});
+
             return;
         }
 
@@ -19,6 +20,7 @@ module.exports = {
 
         if (isReg) {
             res.status(400).render('register', {info: 'user with this mail already exists'});
+
             return;
         }
 
@@ -45,9 +47,10 @@ module.exports = {
 
         if (!currentUser) {
             res.status(404).end('user not found');
+
             return;
         }
 
         res.render('user', {currentUser});
     }
-}
+};

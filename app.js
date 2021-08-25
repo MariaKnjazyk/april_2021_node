@@ -6,7 +6,7 @@ const {PORT} = require('./config/variables');
 const {
     authRouter,
     userRouter
-} = require("./routers");
+} = require('./routers');
 
 const app = express();
 

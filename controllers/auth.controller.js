@@ -1,5 +1,5 @@
-const {getUsersFromFile} = require("../services/user.service");
-const {PATH_USERS} = require("../config/variables");
+const {getUsersFromFile} = require('../services/user.service');
+const {PATH_USERS} = require('../config/variables');
 
 module.exports = {
     loginUser: async (req, res) => {
@@ -10,9 +10,10 @@ module.exports = {
 
         if (logUser) {
             res.redirect(`/users/${logUser.id}`);
+
             return;
         }
 
         res.status(404).render('login_unsuccessful');
     }
-}
+};

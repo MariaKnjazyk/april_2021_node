@@ -8,9 +8,11 @@ module.exports = {
     getUsersFromFile: async (pathUsers) => {
         try {
             const usersData = await readFileFsPromisify(pathUsers);
+
             return JSON.parse(usersData.toString());
         } catch (e) {
             console.log(e);
+
             return [];
         }
     },
@@ -22,4 +24,4 @@ module.exports = {
             console.log(e);
         }
     }
-}
+};
