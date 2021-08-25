@@ -1,12 +1,12 @@
 const express = require('express');
 const expressHbs = require('express-handlebars');
-const fs = require('fs');
 const path = require('path');
 
 const {PORT} = require('./config/variables');
-const usersFromFile = require('./db/users');
-
-const users = JSON.parse(JSON.stringify(usersFromFile));
+const {
+    authRouter,
+    userRouter
+} = require("./routers");
 
 const app = express();
 
@@ -20,76 +20,16 @@ app.set('view engine', '.hbs');
 app.engine('.hbs', expressHbs({defaultLayout: false}));
 app.set('views', pathStatic);
 
-
-app.get('/ping', (req, res) => {
-    res.json('Pong');
-});
-
-app.get('/', (req, res) => {
-    res.render('home');
-});
+app.use('/auth', authRouter);
+app.use('/users', userRouter);
 
 app.get('/login', (req, res) => {
     res.render('login');
 });
 
-app.post('/login', (req, res) => {
-    const {mail, password} = req.body;
-
-    const logUser = users.find(user => user.mail === mail && user.password === password);
-    if (logUser) {
-        res.status(200).redirect(`/users/${logUser.id}`);
-        return;
-    }
-
-    res.status(404).render('login_unsuccessful');
-});
-
 app.get('/register', (req, res) => {
     res.render('register');
 });
-
-app.post('/register', (req, res) => {
-    const {mail, password} = req.body;
-
-    if (!mail || !password) {
-        res.status(400).render('register', {info: 'fill in all fields'});
-        return;
-    }
-
-    const isReg = users.some(user => user.mail === mail);
-    if (isReg) {
-        res.status(400).render('register', {info: 'user with this mail already exists'});
-        return;
-    }
-
-    const lastId = users[users.length - 1].id;
-    const id = lastId + 1;
-    users.push({id, mail, password});
-    fs.writeFile(path.join(__dirname, 'db', 'users.js'), `module.exports = ${JSON.stringify(users)}`, err => {
-        console.log(err);
-    });
-
-    res.status(201).render('register_success');
-});
-
-
-app.get('/users', (req, res) => {
-    res.render('users', {users});
-});
-
-app.get('/users/:userId', (req, res) => {
-    const {userId} = req.params;
-    const currentUser = users.find(user => +user.id === +userId);
-
-    if (!currentUser) {
-        res.status(404).end('user not found');
-        return;
-    }
-
-    res.render('user', {currentUser});
-});
-
 
 app.listen(PORT, () => {
     console.log('App listen', PORT);
