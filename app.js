@@ -5,6 +5,7 @@ const path = require('path');
 const { PORT } = require('./config/variables');
 const {
     authRouter,
+    errorRouter,
     userRouter
 } = require('./routers');
 
@@ -21,14 +22,15 @@ app.engine('.hbs', expressHbs({ defaultLayout: false }));
 app.set('views', pathStatic);
 
 app.use('/auth', authRouter);
+app.use('/error', errorRouter);
 app.use('/users', userRouter);
 
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.json('login');
 });
 
 app.get('/register', (req, res) => {
-    res.render('register');
+    res.json('register');
 });
 
 app.listen(PORT, () => {

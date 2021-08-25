@@ -11,7 +11,7 @@ module.exports = {
         const users = await getUsersFromFile(PATH_USERS);
 
         if (!mail || !password) {
-            res.status(400).render('register', { info: 'fill in all fields' });
+            res.status(400).redirect('/error?info=fill_in_all_fields');
 
             return;
         }
@@ -19,7 +19,7 @@ module.exports = {
         const isReg = users.some((user) => user.mail === mail);
 
         if (isReg) {
-            res.status(400).render('register', { info: 'user with this mail already exists' });
+            res.status(400).redirect('/error?info=user_with_this_mail_already_exists');
 
             return;
         }
@@ -30,12 +30,12 @@ module.exports = {
         users.push({ id, mail, password });
         await writeUsersInFile(PATH_USERS, users);
 
-        res.status(201).render('register_success');
+        res.status(201).redirect('/login');
     },
 
     getAllUsers: async (req, res) => {
         const users = await getUsersFromFile(PATH_USERS);
-        res.render('users', { users });
+        res.json(users);
     },
 
     getSingleUser: async (req, res) => {
@@ -51,6 +51,6 @@ module.exports = {
             return;
         }
 
-        res.render('user', { currentUser });
+        res.json(currentUser);
     }
 };

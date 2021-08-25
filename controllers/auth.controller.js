@@ -14,6 +14,6 @@ module.exports = {
             return;
         }
 
-        res.status(404).render('login_unsuccessful');
+        res.status(404).redirect('/register');
     }
 };
