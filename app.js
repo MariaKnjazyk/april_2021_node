@@ -4,6 +4,7 @@ const { PORT } = require('./config/variables');
 const {
     authRouter,
     errorRouter,
+    login_registerRouter,
     userRouter
 } = require('./routers');
 
@@ -15,14 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/auth', authRouter);
 app.use('/error', errorRouter);
 app.use('/users', userRouter);
-
-app.get('/login', (req, res) => {
-    res.json('login');
-});
-
-app.get('/register', (req, res) => {
-    res.json('register');
-});
+app.use('/', login_registerRouter);
 
 app.listen(PORT, () => {
     console.log('App listen', PORT);
