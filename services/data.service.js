@@ -9,6 +9,12 @@ module.exports = {
         await modelSch.deleteOne({ _id: id });
     },
 
+    findItemById: async (modelSch, id) => {
+        const item = await modelSch.findById(id);
+
+        return item;
+    },
+
     getItems: async (modelSch, data) => {
         const items = await modelSch.find(data);
 

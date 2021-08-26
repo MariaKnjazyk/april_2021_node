@@ -1,4 +1,4 @@
 module.exports = {
-    START_YEAR: 1950,
-    CURRENT_YEAR: 2021
+    CURRENT_YEAR: 2021,
+    START_YEAR: 1950
 };

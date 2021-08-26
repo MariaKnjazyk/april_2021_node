@@ -1,19 +1,19 @@
-const { Schema, model } = require('mongoose');
+const { model, Schema } = require('mongoose');
 
 const { userRolesEnum } = require('../config');
 
 const userSchema = new Schema({
-    name: {
-        trim: true,
-        type: String,
-        required: true
-    },
-
     email: {
         trim: true,
         type: String,
         required: true,
         unique: true
+    },
+
+    name: {
+        trim: true,
+        type: String,
+        required: true
     },
 
     password: {

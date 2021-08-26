@@ -1,5 +1,5 @@
-const { User } = require('../dataBase');
 const { dataService } = require('../services');
+const { User } = require('../dataBase');
 
 module.exports = {
     createUser: async (req, res, next) => {

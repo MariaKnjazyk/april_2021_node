@@ -1,14 +1,15 @@
 const { Car } = require('../dataBase');
+const { carYears, errorMessage } = require('../config');
+const { dataService } = require('../services');
 const ErrorHandler = require('../errors/ErrorHandler');
-const { errorMessage, carYears } = require('../config');
 
 module.exports = {
-    isFillInAllFields: (req, res, next) => {
+    checkDataToModify: (req, res, next) => {
         try {
             const { model, year } = req.body;
 
-            if (!model || !year) {
-                throw new ErrorHandler(400, errorMessage.FILL_FIELDS);
+            if (!model && !year) {
+                throw new ErrorHandler(400, errorMessage.NO_DATA);
             }
 
             next();
@@ -20,13 +21,27 @@ module.exports = {
     isCarPresent: async (req, res, next) => {
         try {
             const { carId } = req.params;
-            const car = await Car.findById(carId);
+            const car = await dataService.findItemById(Car, carId);
 
             if (!car) {
                 throw new ErrorHandler(404, errorMessage.NOT_FOUND);
             }
 
             req.car = car;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    isFillInAllFields: (req, res, next) => {
+        try {
+            const { model, year } = req.body;
+
+            if (!model || !year) {
+                throw new ErrorHandler(400, errorMessage.FILL_FIELDS);
+            }
 
             next();
         } catch (e) {
@@ -46,19 +61,5 @@ module.exports = {
         } catch (e) {
             next(e);
         }
-    },
-
-    checkDataToModify: (req, res, next) => {
-        try {
-            const { model, year } = req.body;
-
-            if (!model && !year) {
-                throw new ErrorHandler(400, errorMessage.NO_DATA);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
+    }
 };

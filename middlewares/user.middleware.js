@@ -1,39 +1,9 @@
-const { User } = require('../dataBase');
+const { dataService } = require('../services');
 const ErrorHandler = require('../errors/ErrorHandler');
 const { errorMessage } = require('../config');
+const { User } = require('../dataBase');
 
 module.exports = {
-    isFillInAllFields: (req, res, next) => {
-        try {
-            const { email, name, password } = req.body;
-
-            if (!email || !name || !password) {
-                throw new ErrorHandler(400, errorMessage.FILL_FIELDS);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    isUserPresent: async (req, res, next) => {
-        try {
-            const { userId } = req.params;
-            const user = await User.findById(userId);
-
-            if (!user) {
-                throw new ErrorHandler(404, errorMessage.NOT_FOUND);
-            }
-
-            req.user = user;
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     checkDataToModify: (req, res, next) => {
         try {
             const { email, name, password } = req.body;
@@ -62,5 +32,37 @@ module.exports = {
         } catch (e) {
             next(e);
         }
+    },
+
+    isFillInAllFields: (req, res, next) => {
+        try {
+            const { email, name, password } = req.body;
+
+            if (!email || !name || !password) {
+                throw new ErrorHandler(400, errorMessage.FILL_FIELDS);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    isUserPresent: async (req, res, next) => {
+        try {
+            const { userId } = req.params;
+            const user = await dataService.findItemById(User, userId);
+
+            if (!user) {
+                throw new ErrorHandler(404, errorMessage.NOT_FOUND);
+            }
+
+            req.user = user;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
     }
+
 };
