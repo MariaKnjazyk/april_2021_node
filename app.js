@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const { variables: { PORT, MONG_CONNECT }, errorMessage } = require('./config');
+const { errorMessage, statusCodes, variables: { PORT, MONG_CONNECT } } = require('./config');
 const {
     carRouter,
     userRouter
@@ -25,12 +25,12 @@ app.listen(PORT, () => {
 
 function _notFoundError(err, req, res, next) {
     next({
-        status: err.status || 404,
+        status: err.status || statusCodes.NOT_FOUND,
         message: err.message || errorMessage.NOT_FOUND
     });
 }
 
 // eslint-disable-next-line no-unused-vars
 function _mainErrorHandler(err, req, res, next) {
-    res.status(err.status || 500).json({ message: err.message });
+    res.status(err.status || statusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });
 }

@@ -1,12 +1,13 @@
 const { Car } = require('../dataBase');
 const { dataService } = require('../services');
+const { statusCodes } = require('../config');
 
 module.exports = {
     createCar: async (req, res, next) => {
         try {
             const createdCar = await dataService.createItem(Car, req.body);
 
-            res.status(201).json(createdCar);
+            res.status(statusCodes.CREATED).json(createdCar);
         } catch (e) {
             next(e);
         }

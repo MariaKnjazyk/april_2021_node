@@ -1,6 +1,6 @@
 const { dataService } = require('../services');
 const ErrorHandler = require('../errors/ErrorHandler');
-const { errorMessage } = require('../config');
+const { errorMessage, statusCodes } = require('../config');
 const { User } = require('../dataBase');
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
             const { email, name, password } = req.body;
 
             if (!email && !name && !password) {
-                throw new ErrorHandler(400, errorMessage.NO_DATA);
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, errorMessage.NO_DATA);
             }
 
             next();
@@ -25,7 +25,7 @@ module.exports = {
             const userByEmail = await User.findOne({ email });
 
             if (userByEmail) {
-                throw new ErrorHandler(409, errorMessage.EXIST_EMAIL);
+                throw new ErrorHandler(statusCodes.CONFLICT, errorMessage.EXIST_EMAIL);
             }
 
             next();
@@ -39,7 +39,7 @@ module.exports = {
             const { email, name, password } = req.body;
 
             if (!email || !name || !password) {
-                throw new ErrorHandler(400, errorMessage.FILL_FIELDS);
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, errorMessage.FILL_FIELDS);
             }
 
             next();
@@ -54,7 +54,7 @@ module.exports = {
             const user = await dataService.findItemById(User, userId);
 
             if (!user) {
-                throw new ErrorHandler(404, errorMessage.NOT_FOUND);
+                throw new ErrorHandler(statusCodes.NOT_FOUND, errorMessage.NOT_FOUND);
             }
 
             req.user = user;

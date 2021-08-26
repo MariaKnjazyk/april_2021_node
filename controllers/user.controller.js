@@ -1,4 +1,5 @@
 const { dataService } = require('../services');
+const { statusCodes } = require('../config');
 const { User } = require('../dataBase');
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
         try {
             const createdUser = await dataService.createItem(User, req.body);
 
-            res.status(201).json(createdUser);
+            res.status(statusCodes.CREATED).json(createdUser);
         } catch (e) {
             next(e);
         }
@@ -18,7 +19,7 @@ module.exports = {
 
             await dataService.deleteItem(User, userId);
 
-            res.status(204).json(`User with id ${userId} is deleted`);
+            res.json(`User with id ${userId} is deleted`);
         } catch (e) {
             next(e);
         }
