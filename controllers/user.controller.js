@@ -1,68 +1,57 @@
-const { PATH_USERS } = require('../config/variables');
-const {
-    getUsersFromFile,
-    writeUsersInFile
-} = require('../services/user.service');
+const { User } = require('../dataBase');
+const { dataService } = require('../services');
 
 module.exports = {
-    createUser: async (req, res) => {
+    createUser: async (req, res, next) => {
         try {
-            const { mail, password } = req.body;
+            const createdUser = await dataService.createItem(User, req.body);
 
-            const users = await getUsersFromFile(PATH_USERS);
-
-            if (!mail || !password) {
-                res.status(400).redirect('/error?info=fill_in_all_fields');
-
-                return;
-            }
-
-            const isReg = users.some((user) => user.mail === mail);
-
-            if (isReg) {
-                res.status(400).redirect('/error?info=user_with_this_mail_already_exists');
-
-                return;
-            }
-
-            const lastId = users[users.length - 1].id;
-            const id = lastId + 1;
-
-            users.push({ id, mail, password });
-            await writeUsersInFile(PATH_USERS, users);
-
-            res.status(201).redirect('/login');
+            res.status(201).json(createdUser);
         } catch (e) {
-            res.status(500).json(e.message);
+            next(e);
         }
     },
 
-    getAllUsers: async (req, res) => {
-        try {
-            const users = await getUsersFromFile(PATH_USERS);
-            res.json(users);
-        } catch (e) {
-            res.status(500).json(e.message);
-        }
-    },
-
-    getSingleUser: async (req, res) => {
+    deleteUser: async (req, res, next) => {
         try {
             const { userId } = req.params;
 
-            const users = await getUsersFromFile(PATH_USERS);
+            await dataService.deleteItem(User, userId);
 
-            const currentUser = users.find((user) => user.id === +userId);
-
-            if (!currentUser) {
-                res.status(404).end('user not found');
-
-                return;
-            }
-
-            res.json(currentUser);
+            res.status(204).json(`User with id ${userId} is deleted`);
         } catch (e) {
-            res.status(500).json(e.message);
+            next(e);
+        }
+    },
+
+    getUsers: async (req, res, next) => {
+        try {
+            const users = await dataService.getItems(User, req.query);
+
+            res.json(users);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    getUserById: (req, res, next) => {
+        try {
+            res.json(req.user);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    updateUser: async (req, res, next) => {
+        try {
+            const { userId } = req.params;
+
+            const userUpdate = await dataService.updateItem(User, userId, req.body);
+
+            res.json(userUpdate);
+        } catch (e) {
+            next(e);
         }
     }
+
 };
