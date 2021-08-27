@@ -19,7 +19,7 @@ module.exports = {
 
             await dataService.deleteItem(User, userId);
 
-            res.json(`User with id ${userId} is deleted`);
+            res.status(statusCodes.DELETED).json(`User with id ${userId} is deleted`);
         } catch (e) {
             next(e);
         }
