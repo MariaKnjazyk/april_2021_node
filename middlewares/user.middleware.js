@@ -5,34 +5,6 @@ const { User } = require('../dataBase');
 const { userValidator } = require('../validators');
 
 module.exports = {
-    validateDataToUpdate: (req, res, next) => {
-        try {
-            const { error } = userValidator.updateOrFindUser.validate(req.body);
-
-            if (error) {
-                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    validateDataToFind: (req, res, next) => {
-        try {
-            const { error } = userValidator.updateOrFindUser.validate(req.query);
-
-            if (error) {
-                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     checkPassword: async (req, res, next) => {
         try {
             const { user } = req;
@@ -117,6 +89,34 @@ module.exports = {
     validateDataToCreate: (req, res, next) => {
         try {
             const { error } = userValidator.createUser.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    validateDataToUpdate: (req, res, next) => {
+        try {
+            const { error } = userValidator.updateOrFindUser.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    validateDataToFind: (req, res, next) => {
+        try {
+            const { error } = userValidator.updateOrFindUser.validate(req.query);
 
             if (error) {
                 throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
