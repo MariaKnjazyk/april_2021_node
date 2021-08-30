@@ -1,13 +1,19 @@
-const { dataService } = require('../services');
+const { passwordService } = require('../services');
 const { statusCodes } = require('../config');
 const { User } = require('../dataBase');
+const { userUtil } = require('../utils');
 
 module.exports = {
     createUser: async (req, res, next) => {
         try {
-            const createdUser = await dataService.createItem(User, req.body);
+            const { password } = req.body;
 
-            res.status(statusCodes.CREATED).json(createdUser);
+            const hashedPassword = await passwordService.hash(password);
+
+            const createdUser = await User.create({ ...req.body, password: hashedPassword });
+            const userToReturn = userUtil.userNormalizator(createdUser);
+
+            res.status(statusCodes.CREATED).json(userToReturn);
         } catch (e) {
             next(e);
         }
@@ -17,7 +23,7 @@ module.exports = {
         try {
             const { userId } = req.params;
 
-            await dataService.deleteItem(User, userId);
+            await User.deleteOne({ _id: userId });
 
             res.status(statusCodes.DELETED).json(`User with id ${userId} is deleted`);
         } catch (e) {
@@ -27,9 +33,11 @@ module.exports = {
 
     getUsers: async (req, res, next) => {
         try {
-            const users = await dataService.getItems(User, req.query);
+            const users = await User.find(req.query);
 
-            res.json(users);
+            const usersToReturn = users.map((user) => userUtil.userNormalizator(user));
+
+            res.json(usersToReturn);
         } catch (e) {
             next(e);
         }
@@ -37,7 +45,11 @@ module.exports = {
 
     getUserById: (req, res, next) => {
         try {
-            res.json(req.user);
+            const { user } = req;
+
+            const userToReturn = userUtil.userNormalizator(user);
+
+            res.json(userToReturn);
         } catch (e) {
             next(e);
         }
@@ -47,9 +59,11 @@ module.exports = {
         try {
             const { userId } = req.params;
 
-            const userUpdate = await dataService.updateItem(User, userId, req.body);
+            const userUpdate = await User.findByIdAndUpdate(userId, req.body);
 
-            res.json(userUpdate);
+            const userToReturn = userUtil.userNormalizator(userUpdate);
+
+            res.status(statusCodes.CREATED).json(userToReturn);
         } catch (e) {
             next(e);
         }

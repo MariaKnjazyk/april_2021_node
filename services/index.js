@@ -1,3 +1,3 @@
 module.exports = {
-    dataService: require('./data.service')
+    passwordService: require('./password.service')
 };
