@@ -1,7 +1,7 @@
 const { Car } = require('../dataBase');
 const { carValidator } = require('../validators');
+const { ErrorHandler } = require('../errors');
 const { errorMessage, statusCodes } = require('../config');
-const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
     isCarPresentByDynamicParam: (paramName, searchIn = 'body', dbFiled = paramName) => async (req, res, next) => {

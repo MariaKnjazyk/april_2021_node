@@ -1,4 +1,4 @@
-const ErrorHandler = require('../errors/ErrorHandler');
+const { ErrorHandler } = require('../errors');
 const { errorMessage, statusCodes } = require('../config');
 const { User } = require('../dataBase');
 const { userValidator } = require('../validators');

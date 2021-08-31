@@ -5,7 +5,7 @@ const { authMiddleware, userMiddleware } = require('../middlewares');
 
 router.post('/',
     userMiddleware.validateDataDynamic('authUser'),
-    userMiddleware.isUserPresentByDynamicParam('email'),
+    authMiddleware.isUserPresentByDynamicParam('email'),
     authMiddleware.checkPassword,
     authController.loginUser);
 
