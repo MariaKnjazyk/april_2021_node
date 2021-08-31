@@ -3,25 +3,36 @@ const router = require('express').Router();
 const { carController } = require('../controllers');
 const { carMiddleware } = require('../middlewares');
 
-router.get('/',
+router.get(
+    '/',
     carMiddleware.validateDataDynamic('updateOrFindCar', 'query'),
-    carController.getCars);
-router.post('/',
+    carController.getCars
+);
+router.post(
+    '/',
     carMiddleware.validateDataDynamic('createCar'),
-    carController.createCar);
+    carController.createCar
+);
 
-router.delete('/:carId',
-    carMiddleware.validateDataDynamic('carId', 'params'),
+router.use(
+    '/:carId',
+    carMiddleware.validateDataDynamic('carId', 'params')
+);
+router.delete(
+    '/:carId',
     carMiddleware.isCarPresentByDynamicParam('carId', 'params', '_id'),
-    carController.deleteCar);
-router.get('/:carId',
-    carMiddleware.validateDataDynamic('carId', 'params'),
+    carController.deleteCar
+);
+router.get(
+    '/:carId',
     carMiddleware.isCarPresentByDynamicParam('carId', 'params', '_id'),
-    carController.getCarById);
-router.put('/:carId',
-    carMiddleware.validateDataDynamic('carId', 'params'),
+    carController.getCarById
+);
+router.put(
+    '/:carId',
     carMiddleware.validateDataDynamic('updateOrFindCar'),
     carMiddleware.isCarPresentByDynamicParam('carId', 'params', '_id'),
-    carController.updateCar);
+    carController.updateCar
+);
 
 module.exports = router;
