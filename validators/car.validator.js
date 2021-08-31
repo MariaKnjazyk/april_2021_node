@@ -3,7 +3,7 @@ const Joi = require('joi');
 const { constants: { CURRENT_YEAR, ID_REGEXP, START_YEAR } } = require('../config');
 
 const carId = Joi.object({
-    userId: Joi.string().trim().regex(ID_REGEXP)
+    carId: Joi.string().trim().regex(ID_REGEXP)
 });
 
 const createCar = Joi.object({

@@ -4,10 +4,11 @@ const { errorMessage, statusCodes } = require('../config');
 const ErrorHandler = require('../errors/ErrorHandler');
 
 module.exports = {
-    isCarPresent: async (req, res, next) => {
+    isCarPresentByDynamicParam: (paramName, searchIn = 'body', dbFiled = paramName) => async (req, res, next) => {
         try {
-            const { carId } = req.params;
-            const car = await Car.findById(carId);
+            const data = req[searchIn][paramName];
+
+            const car = await Car.findOne({ [dbFiled]: data });
 
             if (!car) {
                 throw new ErrorHandler(statusCodes.NOT_FOUND, errorMessage.NOT_FOUND);
@@ -21,51 +22,9 @@ module.exports = {
         }
     },
 
-    validateCarId: (req, res, next) => {
+    validateDataDynamic: (destiny, dataIn = 'body') => (req, res, next) => {
         try {
-            const { error } = carValidator.carId.validate(req.params);
-
-            if (error) {
-                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    validateDataToCreate: (req, res, next) => {
-        try {
-            const { error } = carValidator.createCar.validate(req.body);
-
-            if (error) {
-                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    validateDataToFind: (req, res, next) => {
-        try {
-            const { error } = carValidator.updateOrFindCar.validate(req.query);
-
-            if (error) {
-                throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    validateDataToUpdate: (req, res, next) => {
-        try {
-            const { error } = carValidator.updateOrFindCar.validate(req.body);
+            const { error } = carValidator[destiny].validate(req[dataIn]);
 
             if (error) {
                 throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
