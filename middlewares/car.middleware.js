@@ -1,10 +1,10 @@
 const { Car } = require('../dataBase');
 const { carValidator } = require('../validators');
+const { dataIn: { BODY }, errorMessage, statusCodes } = require('../config');
 const { ErrorHandler } = require('../errors');
-const { errorMessage, statusCodes } = require('../config');
 
 module.exports = {
-    isCarPresentByDynamicParam: (paramName, dataIn = 'body', dbFiled = paramName) => async (req, res, next) => {
+    isCarPresentByDynamicParam: (paramName, dataIn = BODY, dbFiled = paramName) => async (req, res, next) => {
         try {
             const data = req[dataIn][paramName];
 
@@ -22,7 +22,7 @@ module.exports = {
         }
     },
 
-    validateDataDynamic: (destiny, dataIn = 'body') => (req, res, next) => {
+    validateDataDynamic: (destiny, dataIn = BODY) => (req, res, next) => {
         try {
             const { error } = carValidator[destiny].validate(req[dataIn]);
 
