@@ -26,18 +26,21 @@ router.use(
 );
 router.delete(
     '/:carId',
-    carMiddleware.isCarPresentByDynamicParam(paramName.car.ID, dataIn.PARAMS, dbFiled._ID),
+    carMiddleware.getCarByDynamicParam(paramName.car.ID, dataIn.PARAMS, dbFiled._ID),
+    carMiddleware.isCarPresent,
     carController.deleteCar
 );
 router.get(
     '/:carId',
-    carMiddleware.isCarPresentByDynamicParam(paramName.car.ID, dataIn.PARAMS, dbFiled._ID),
+    carMiddleware.getCarByDynamicParam(paramName.car.ID, dataIn.PARAMS, dbFiled._ID),
+    carMiddleware.isCarPresent,
     carController.getCarById
 );
 router.put(
     '/:carId',
     carMiddleware.validateDataDynamic(destiny.car.UPDATE_OR_FIND_CAR),
-    carMiddleware.isCarPresentByDynamicParam(paramName.car.ID, dataIn.PARAMS, dbFiled._ID),
+    carMiddleware.getCarByDynamicParam(paramName.car.ID, dataIn.PARAMS, dbFiled._ID),
+    carMiddleware.isCarPresent,
     carController.updateCar
 );
 
