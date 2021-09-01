@@ -4,9 +4,9 @@ const { ErrorHandler } = require('../errors');
 const { errorMessage, statusCodes } = require('../config');
 
 module.exports = {
-    isCarPresentByDynamicParam: (paramName, searchIn = 'body', dbFiled = paramName) => async (req, res, next) => {
+    isCarPresentByDynamicParam: (paramName, dataIn = 'body', dbFiled = paramName) => async (req, res, next) => {
         try {
-            const data = req[searchIn][paramName];
+            const data = req[dataIn][paramName];
 
             const car = await Car.findOne({ [dbFiled]: data });
 
