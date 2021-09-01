@@ -1,5 +1,6 @@
 module.exports = {
     constants: require('./constants'),
+    databaseTableEnum: require('./database-tables.enum'),
     dataIn: require('./dataIn'),
     dbFiled: require('./dbFiled'),
     destiny: require('./destiny'),
