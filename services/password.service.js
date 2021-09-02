@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
 
 const { ErrorHandler } = require('../errors');
-const { errorMessage, statusCodes } = require('../config');
+const { constants: { SALT }, errorMessage, statusCodes } = require('../config');
 
 module.exports = {
-    hash: (password) => bcrypt.hash(password, 10),
+    hash: (password) => bcrypt.hash(password, SALT),
     compare: async (hash, password) => {
         const isPasswordMatched = await bcrypt.compare(password, hash);
 
