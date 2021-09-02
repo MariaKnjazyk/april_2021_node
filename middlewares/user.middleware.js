@@ -52,7 +52,7 @@ module.exports = {
             if (!user && isUserNeed) {
                 if (!auth) throw new ErrorHandler(statusCodes.NOT_FOUND, errorMessage.NOT_FOUND);
 
-                throw new ErrorHandler(statusCodes.NOT_FOUND, errorMessage.WRONG_PASSW_OR_EMAIL);
+                throw new ErrorHandler(statusCodes.NOT_FOUND, errorMessage.WRONG_LOG_OR_PASS);
             }
 
             if (user && !isUserNeed) {
