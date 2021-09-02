@@ -38,10 +38,8 @@ router.delete(
 );
 router.get(
     '/:userId',
-    authMiddleware.validateToken(),
     userMiddleware.getUserByDynamicParam(paramName.user.ID, dataIn.PARAMS, dbFiled._ID),
     userMiddleware.isUserPresent(),
-    userMiddleware.checkUserAccess([ADMIN]),
     userController.getUserById
 );
 router.put(
