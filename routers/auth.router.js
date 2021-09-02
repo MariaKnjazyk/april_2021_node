@@ -27,6 +27,12 @@ router.post(
 );
 
 router.post(
+    '/logout_all_devices',
+    authMiddleware.validateToken(),
+    authController.logoutUserAllDevices
+);
+
+router.post(
     '/refresh',
     authMiddleware.validateToken(TOKEN_TYPE_REFRESH),
     authController.refresh

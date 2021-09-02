@@ -34,16 +34,28 @@ module.exports = {
         }
     },
 
+    logoutUserAllDevices: async (req, res, next) => {
+        try {
+            const { loginUser } = req;
+
+            await OAuth.deleteMany({ user: loginUser._id });
+
+            res.json('OK');
+        } catch (e) {
+            next(e);
+        }
+    },
+
     refresh: async (req, res, next) => {
         try {
             const refresh_token = req.get(AUTHORIZATION);
-            const user = req.loginUser;
+            const { loginUser } = req;
 
             const tokenPair = jwtService.generateTokenPair();
 
             await OAuth.findOneAndUpdate({ refresh_token }, { ...tokenPair });
 
-            res.json({ ...tokenPair, user: userUtil.userNormalizator(user) });
+            res.json({ ...tokenPair, user: userUtil.userNormalizator(loginUser) });
         } catch (e) {
             next(e);
         }
