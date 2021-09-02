@@ -39,11 +39,9 @@ module.exports = {
             const refresh_token = req.get(AUTHORIZATION);
             const user = req.loginUser;
 
-            await OAuth.deleteOne({ refresh_token });
-
             const tokenPair = jwtService.generateTokenPair();
 
-            await OAuth.create({ ...tokenPair, user: user._id });
+            await OAuth.findOneAndUpdate({ refresh_token }, { ...tokenPair });
 
             res.json({ ...tokenPair, user: userUtil.userNormalizator(user) });
         } catch (e) {
