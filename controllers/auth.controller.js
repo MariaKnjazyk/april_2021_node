@@ -53,7 +53,7 @@ module.exports = {
 
             const tokenPair = jwtService.generateTokenPair();
 
-            await OAuth.findOneAndUpdate({ refresh_token }, { ...tokenPair });
+            await OAuth.findOneAndUpdate({ refresh_token }, tokenPair);
 
             res.json({ ...tokenPair, user: userUtil.userNormalizator(loginUser) });
         } catch (e) {
