@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const {
-    constants: { NEED_ITEM },
+    constants: { NEED_ITEM, NO_ONE },
     dataIn,
     dbFiled,
     destiny,
@@ -50,7 +50,7 @@ router.put(
     userMiddleware.isUserPresent(!NEED_ITEM),
     userMiddleware.getUserByDynamicParam(paramName.user.ID, dataIn.PARAMS, dbFiled._ID),
     userMiddleware.isUserPresent(),
-    userMiddleware.checkUserAccess([ADMIN]),
+    userMiddleware.checkUserAccess([NO_ONE]),
     userController.updateUser
 );
 
