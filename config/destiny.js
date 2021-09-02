@@ -7,8 +7,8 @@ module.exports = {
 
     user: {
         AUTH_USER: 'authUser',
-        USER_ID: 'userId',
         CREATE_USER: 'createUser',
-        UPDATE_OR_FIND_USER: 'updateOrFindUser'
+        UPDATE_OR_FIND_USER: 'updateOrFindUser',
+        USER_ID: 'userId'
     }
 };

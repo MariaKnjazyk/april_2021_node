@@ -48,8 +48,8 @@ module.exports = {
 
     refresh: async (req, res, next) => {
         try {
-            const refresh_token = req.get(AUTHORIZATION);
             const { loginUser } = req;
+            const refresh_token = req.get(AUTHORIZATION);
 
             const tokenPair = jwtService.generateTokenPair();
 
