@@ -13,7 +13,7 @@ module.exports = {
         try {
             const { loginUser, user } = req;
 
-             if (loginUser._id === user._id) return next();
+            if (loginUser._id.toString() === user._id.toString()) return next();
 
             if (!rolesArr.length) return next();
 

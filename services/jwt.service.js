@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const {
-    constants: { TOKEN_TIPE_ACCESS },
+    constants: { TOKEN_TYPE_ACCESS },
     errorMessage,
     statusCodes,
     variables: { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY }
@@ -22,7 +22,7 @@ module.exports = {
 
     verifyToken: async (token, tokenType) => {
         try {
-            const secret = tokenType === TOKEN_TIPE_ACCESS ? ACCESS_SECRET_KEY : REFRESH_SECRET_KEY;
+            const secret = tokenType === TOKEN_TYPE_ACCESS ? ACCESS_SECRET_KEY : REFRESH_SECRET_KEY;
 
             await verifyPromise(token, secret);
         } catch (e) {

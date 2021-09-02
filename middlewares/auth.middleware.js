@@ -25,7 +25,7 @@ module.exports = {
                 throw new ErrorHandler(statusCodes.NOT_VALID_TOKEN, errorMessage.NOT_VALID_TOKEN);
             }
 
-            req.LoginUser = tokenFromDB.user;
+            req.loginUser = tokenFromDB.user;
 
             next();
         } catch (e) {
