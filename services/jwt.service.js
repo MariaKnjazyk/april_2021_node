@@ -26,7 +26,7 @@ module.exports = {
 
             await verifyPromise(token, secret);
         } catch (e) {
-            throw new ErrorHandler(statusCodes.INVALID_TOKEN, errorMessage.INVALID_TOKEN);
+            throw new ErrorHandler(statusCodes.NOT_VALID_TOKEN, errorMessage.NOT_VALID_TOKEN);
         }
     }
 };

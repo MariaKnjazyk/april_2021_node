@@ -5,7 +5,6 @@ module.exports = {
     DELETED: 204,
     FORBIDDEN: 403,
     INTERNAL_SERVER_ERROR: 500,
-    INVALID_TOKEN: 401,
     NOT_FOUND: 404,
     NOT_VALID_TOKEN: 401
 };
