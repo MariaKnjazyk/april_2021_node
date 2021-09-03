@@ -1,4 +1,4 @@
-const { constants: { AUTHORIZATION } } = require('../config');
+const { constants: { AUTHORIZATION }, statusCodes } = require('../config');
 const { jwtService, passwordService } = require('../services');
 const { OAuth } = require('../dataBase');
 const { userUtil } = require('../utils');
@@ -16,7 +16,7 @@ module.exports = {
 
             await OAuth.create({ ...tokenPair, user: user._id });
 
-            res.json({ ...tokenPair, user: userToReturn });
+            res.status(statusCodes.CREATED).json({ ...tokenPair, user: userToReturn });
         } catch (e) {
             next(e);
         }
@@ -28,7 +28,7 @@ module.exports = {
 
             await OAuth.deleteOne({ access_token });
 
-            res.json('OK');
+            res.status(statusCodes.DELETED).json('OK');
         } catch (e) {
             next(e);
         }
@@ -40,7 +40,7 @@ module.exports = {
 
             await OAuth.deleteMany({ user: loginUser._id });
 
-            res.json('OK');
+            res.status(statusCodes.DELETED).json('OK');
         } catch (e) {
             next(e);
         }
@@ -55,7 +55,7 @@ module.exports = {
 
             await OAuth.findOneAndUpdate({ refresh_token }, tokenPair);
 
-            res.json({ ...tokenPair, user: userUtil.userNormalizator(loginUser) });
+            res.status(statusCodes.CREATED).json({ ...tokenPair, user: userUtil.userNormalizator(loginUser) });
         } catch (e) {
             next(e);
         }
