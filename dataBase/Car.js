@@ -1,5 +1,7 @@
 const { model, Schema } = require('mongoose');
 
+const { databaseTableEnum: { CAR } } = require('../config');
+
 const carSchema = new Schema({
     model: {
         trim: true,
@@ -13,4 +15,4 @@ const carSchema = new Schema({
     }
 }, { timestamps: true });
 
-module.exports = model('car', carSchema);
+module.exports = model(CAR, carSchema);
