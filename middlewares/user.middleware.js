@@ -9,7 +9,7 @@ const { User } = require('../dataBase');
 const { userValidator } = require('../validators');
 
 module.exports = {
-    checkUserAccess: (rolesArr = []) => (req, res, next) => {
+    checkUserRoleAccess: (rolesArr = []) => (req, res, next) => {
         try {
             const { loginUser, user } = req;
 
@@ -18,6 +18,20 @@ module.exports = {
             if (!rolesArr.length) return next();
 
             if (!rolesArr.includes(loginUser.role)) {
+                throw new ErrorHandler(statusCodes.FORBIDDEN, errorMessage.FORBIDDEN);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUserAccess: (req, res, next) => {
+        try {
+            const { loginUser, user } = req;
+
+            if (loginUser._id.toString() !== user._id.toString()) {
                 throw new ErrorHandler(statusCodes.FORBIDDEN, errorMessage.FORBIDDEN);
             }
 

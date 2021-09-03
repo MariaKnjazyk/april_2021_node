@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const {
-    constants: { NEED_ITEM, NO_ONE },
+    constants: { NEED_ITEM },
     dataIn,
     dbFiled,
     destiny,
@@ -33,7 +33,7 @@ router.delete(
     authMiddleware.validateToken(),
     userMiddleware.getUserByDynamicParam(paramName.user.ID, dataIn.PARAMS, dbFiled._ID),
     userMiddleware.isUserPresent(),
-    userMiddleware.checkUserAccess([ADMIN]),
+    userMiddleware.checkUserRoleAccess([ADMIN]),
     userController.deleteUser
 );
 router.get(
@@ -50,7 +50,7 @@ router.put(
     userMiddleware.isUserPresent(!NEED_ITEM),
     userMiddleware.getUserByDynamicParam(paramName.user.ID, dataIn.PARAMS, dbFiled._ID),
     userMiddleware.isUserPresent(),
-    userMiddleware.checkUserAccess([NO_ONE]),
+    userMiddleware.checkUserAccess,
     userController.updateUser
 );
 
