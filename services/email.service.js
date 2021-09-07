@@ -2,7 +2,6 @@ const EmailTemplate = require('email-templates');
 const nodemailer = require('nodemailer');
 const path = require('path');
 
-const templatesInfo = require('../email-templates');
 const {
     constants,
     errorMessage,
@@ -10,6 +9,7 @@ const {
     variables
 } = require('../config');
 const { ErrorHandler } = require('../errors');
+const templatesInfo = require('../email-templates');
 
 const templateParser = new EmailTemplate({
     views: {
@@ -18,7 +18,7 @@ const templateParser = new EmailTemplate({
 });
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: constants.SERVICE,
     auth: {
         user: variables.NO_REPLY_EMAIL,
         pass: variables.NO_REPLY_EMAIL_PASSWORD

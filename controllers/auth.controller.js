@@ -25,9 +25,9 @@ module.exports = {
         try {
             const { loginUser } = req;
 
-            await InactiveAccount.findOneAndDelete({ [USER]: loginUser[_ID] });
+            await InactiveAccount.deleteOne({ [USER]: loginUser[_ID] });
 
-            res.json('ok');
+            res.json(DONE);
         } catch (e) {
             next(e);
         }
@@ -37,7 +37,7 @@ module.exports = {
         try {
             const { loginUser, body: { password } } = req;
 
-            await ChangePass.findOneAndDelete({ [USER]: loginUser[_ID] });
+            await ChangePass.deleteOne({ [USER]: loginUser[_ID] });
 
             const hashedPassword = await passwordService.hash(password);
 
@@ -106,7 +106,7 @@ module.exports = {
 
             const tokenPair = jwtService.generateTokenPair();
 
-            await OAuth.findOneAndUpdate({ refresh_token }, tokenPair);
+            await OAuth.updateOne({ refresh_token }, tokenPair);
 
             res.status(statusCodes.CREATED).json({ ...tokenPair, user: userUtil.userNormalizator(loginUser) });
         } catch (e) {

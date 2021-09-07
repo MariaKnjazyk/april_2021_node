@@ -10,6 +10,7 @@ module.exports = {
     QUERY_ACTION_TOKEN: '?action_token=',
     PASSWORD_REGEXP: new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,128})/),
     SALT: 10,
+    SERVICE: 'gmail',
     START_YEAR: 1950,
     TOKEN_TYPE_ACCESS: 'access_token',
     TOKEN_TYPE_REFRESH: 'refresh_token'
