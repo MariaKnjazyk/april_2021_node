@@ -2,6 +2,7 @@ module.exports = {
     AUTH: true,
     AUTHORIZATION: 'Authorization',
     CURRENT_YEAR: new Date().getFullYear(),
+    DONE: 'done',
     EMAIL_REGEXP: new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'),
     ID_REGEXP: new RegExp('^[0-9a-fA-F]{24}$'),
     NEED_ITEM: true,

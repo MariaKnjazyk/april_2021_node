@@ -1,5 +1,5 @@
 const {
-    constants: { AUTHORIZATION, QUERY_ACTION_TOKEN },
+    constants: { AUTHORIZATION, DONE, QUERY_ACTION_TOKEN },
     databaseTableEnum: { USER },
     dbFiled: { _ID },
     emailActionsEnum,
@@ -43,11 +43,9 @@ module.exports = {
 
             const changedUser = await User.findByIdAndUpdate(loginUser[_ID], { password: hashedPassword });
 
-            const userToReturn = userUtil.userNormalizator(changedUser);
-
             await OAuth.deleteMany({ [USER]: changedUser[_ID] });
 
-            res.status(statusCodes.CREATED).json(userToReturn);
+            res.status(statusCodes.CREATED).json(DONE);
         } catch (e) {
             next(e);
         }
@@ -83,7 +81,7 @@ module.exports = {
 
             await OAuth.deleteOne({ access_token });
 
-            res.status(statusCodes.DELETED).json('OK');
+            res.status(statusCodes.DELETED);
         } catch (e) {
             next(e);
         }
@@ -95,7 +93,7 @@ module.exports = {
 
             await OAuth.deleteMany({ user: loginUser._id });
 
-            res.status(statusCodes.DELETED).json('OK');
+            res.status(statusCodes.DELETED);
         } catch (e) {
             next(e);
         }
@@ -132,7 +130,7 @@ module.exports = {
                 { userName: userToReturn.name, activeTokenURL: FRONTEND_URL_PASSWORD + QUERY_ACTION_TOKEN + action_token }
             );
 
-            res.status(statusCodes.CREATED).json(userToReturn);
+            res.status(statusCodes.CREATED).json(DONE);
         } catch (e) {
             next(e);
         }
