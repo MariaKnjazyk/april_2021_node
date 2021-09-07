@@ -1,11 +1,12 @@
 const { emailService, jwtActionService, passwordService } = require('../services');
 const {
+    actionEnum,
     constants: { QUERY_ACTION_TOKEN },
     emailActionsEnum,
     statusCodes,
     variables: { URL_ACTIVATE }
 } = require('../config');
-const { InactiveAccount, User } = require('../dataBase');
+const { ActToken, User } = require('../dataBase');
 const { userUtil } = require('../utils');
 
 module.exports = {
@@ -20,7 +21,7 @@ module.exports = {
 
             const action_token = await jwtActionService.generateActionToken();
 
-            await InactiveAccount.create({ action_token, user: userToReturn._id });
+            await ActToken.create({ action_token, user: userToReturn._id, action: actionEnum.ACTIVATE_ACCOUNT });
 
             await emailService.sendMail(
                 userToReturn.email,
@@ -54,7 +55,7 @@ module.exports = {
                 );
             }
 
-            res.status(statusCodes.DELETED);
+            res.sendStatus(statusCodes.DELETED);
         } catch (e) {
             next(e);
         }

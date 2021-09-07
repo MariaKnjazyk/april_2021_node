@@ -1,4 +1,5 @@
 module.exports = {
+    actionEnum: require('./action.enum'),
     constants: require('./constants'),
     databaseTableEnum: require('./database-tables.enum'),
     dataIn: require('./dataIn'),

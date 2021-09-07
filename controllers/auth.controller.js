@@ -1,4 +1,5 @@
 const {
+    actionEnum: { ACTIVATE_ACCOUNT, FORGOT_PASSWORD },
     constants: { AUTHORIZATION, DONE, QUERY_ACTION_TOKEN },
     databaseTableEnum: { USER },
     dbFiled: { _ID },
@@ -13,10 +14,9 @@ const {
     passwordService
 } = require('../services');
 const {
-    ChangePass,
+    ActToken,
     OAuth,
     User,
-    InactiveAccount
 } = require('../dataBase');
 const { userUtil } = require('../utils');
 
@@ -25,7 +25,7 @@ module.exports = {
         try {
             const { loginUser } = req;
 
-            await InactiveAccount.deleteOne({ [USER]: loginUser[_ID] });
+            await ActToken.deleteOne({ [USER]: loginUser[_ID], action: ACTIVATE_ACCOUNT });
 
             res.json(DONE);
         } catch (e) {
@@ -37,7 +37,7 @@ module.exports = {
         try {
             const { loginUser, body: { password } } = req;
 
-            await ChangePass.deleteOne({ [USER]: loginUser[_ID] });
+            await ActToken.deleteOne({ [USER]: loginUser[_ID], action: FORGOT_PASSWORD });
 
             const hashedPassword = await passwordService.hash(password);
 
@@ -81,7 +81,7 @@ module.exports = {
 
             await OAuth.deleteOne({ access_token });
 
-            res.status(statusCodes.DELETED);
+            res.sendStatus(statusCodes.DELETED);
         } catch (e) {
             next(e);
         }
@@ -93,7 +93,7 @@ module.exports = {
 
             await OAuth.deleteMany({ user: loginUser._id });
 
-            res.status(statusCodes.DELETED);
+            res.sendStatus(statusCodes.DELETED);
         } catch (e) {
             next(e);
         }
@@ -122,7 +122,7 @@ module.exports = {
 
             const action_token = await jwtActionService.generateActionToken();
 
-            await ChangePass.create({ action_token, [USER]: userToReturn[_ID] });
+            await ActToken.create({ action_token, [USER]: userToReturn[_ID], action: FORGOT_PASSWORD });
 
             await emailService.sendMail(
                 userToReturn.email,

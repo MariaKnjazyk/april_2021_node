@@ -1,4 +1,5 @@
 const {
+    actionEnum: { ACTIVATE_ACCOUNT },
     constants: { AUTHORIZATION, TOKEN_TYPE_ACCESS },
     databaseTableEnum: { USER },
     errorMessage,
@@ -6,14 +7,14 @@ const {
 } = require('../config');
 const { ErrorHandler } = require('../errors');
 const { jwtActionService, jwtService, passwordService } = require('../services');
-const { InactiveAccount, OAuth } = require('../dataBase');
+const { ActToken, OAuth } = require('../dataBase');
 
 module.exports = {
     isAccountActivated: async (req, res, next) => {
         try {
             const { user } = req;
 
-            const inactiveAcc = await InactiveAccount.findOne({ [USER]: user._id });
+            const inactiveAcc = await ActToken.findOne({ [USER]: user._id, action: ACTIVATE_ACCOUNT });
 
             if (inactiveAcc) {
                 throw new ErrorHandler(statusCodes.NOT_FOUND, errorMessage.ACCOUNT_IS_NOT_ACTIVATED);
@@ -49,7 +50,7 @@ module.exports = {
         }
     },
 
-    validateActionToken: (db) => async (req, res, next) => {
+    validateActionToken: (action) => async (req, res, next) => {
         try {
             const token = req.get(AUTHORIZATION);
 
@@ -59,7 +60,7 @@ module.exports = {
 
             await jwtActionService.verifyActionToken(token);
 
-            const tokenFromDB = await db.findOne({ action_token: token }).populate(USER);
+            const tokenFromDB = await ActToken.findOne({ action_token: token, action }).populate(USER);
 
             if (!tokenFromDB) {
                 throw new ErrorHandler(statusCodes.NOT_VALID_TOKEN, errorMessage.NOT_VALID_TOKEN);
