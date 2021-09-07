@@ -7,6 +7,9 @@ module.exports = {
 
     user: {
         AUTH_USER: 'authUser',
+        CHANGE_PASSWORD_FORGOT: 'changePasswordForgot',
+        CHANGE_PASSWORD_FORGOT_USER: 'changePasswordForgotUser',
+        CHANGE_PASSWORD_RESET: 'changePasswordReset',
         CREATE_USER: 'createUser',
         UPDATE_OR_FIND_USER: 'updateOrFindUser',
         USER_ID: 'userId'

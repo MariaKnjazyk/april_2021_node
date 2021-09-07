@@ -7,6 +7,19 @@ const authUser = Joi.object({
     password: Joi.string().trim().regex(PASSWORD_REGEXP).required(),
 });
 
+const changePasswordForgot = Joi.object({
+    password: Joi.string().trim().regex(PASSWORD_REGEXP).required()
+});
+
+const changePasswordForgotUser = Joi.object({
+    email: Joi.string().trim().regex(EMAIL_REGEXP).required(),
+});
+
+const changePasswordReset = Joi.object({
+    oldPassword: Joi.string().trim().regex(PASSWORD_REGEXP).required(),
+    password: Joi.string().trim().regex(PASSWORD_REGEXP).required()
+});
+
 const createUser = Joi.object({
     email: Joi.string().trim().regex(EMAIL_REGEXP).required(),
     name: Joi.string().alphanum().trim().required()
@@ -30,6 +43,9 @@ const userId = Joi.object({
 
 module.exports = {
     authUser,
+    changePasswordForgot,
+    changePasswordForgotUser,
+    changePasswordReset,
     createUser,
     updateOrFindUser,
     userId

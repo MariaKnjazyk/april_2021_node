@@ -13,7 +13,10 @@ module.exports = {
         try {
             const { loginUser, user } = req;
 
-            if (loginUser._id.toString() === user._id.toString()) return next();
+            if (loginUser._id.toString() === user._id.toString()) {
+                req.deletedByUser = true;
+                return next();
+            }
 
             if (!rolesArr.length) return next();
 
