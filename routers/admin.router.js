@@ -9,18 +9,14 @@ const {
     userRolesEnum: { ADMIN, SUPER_ADMIN }
 } = require('../config');
 
-router.use(
-    '*',
+router.post(
+    '/create',
+    userMiddleware.validateDataDynamic(destiny.user.CREATE_BY_ADMIN),
     authMiddleware.validateToken(),
     userMiddleware.checkUserRoleAccess([
         ADMIN,
         SUPER_ADMIN
-    ])
-);
-
-router.post(
-    '/create',
-    userMiddleware.validateDataDynamic(destiny.user.CREATE_BY_ADMIN),
+    ]),
     userMiddleware.getUserByDynamicParam(paramName.user.EMAIL),
     userMiddleware.isUserPresent(!NEED_ITEM),
     adminController.createUser
