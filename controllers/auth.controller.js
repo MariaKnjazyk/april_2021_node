@@ -34,9 +34,11 @@ module.exports = {
 
     changePassword: async (req, res, next) => {
         try {
-            const { loginUser, body: { password } } = req;
+            const { loginUser, body: { password, oldPassword } } = req;
 
-            await ActToken.deleteOne({ [USER]: loginUser[_ID], action: FORGOT_PASSWORD });
+            if (!oldPassword) {
+                await ActToken.deleteOne({ [USER]: loginUser[_ID], action: FORGOT_PASSWORD });
+            }
 
             const hashedPassword = await passwordService.hash(password);
 
