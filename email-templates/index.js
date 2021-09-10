@@ -2,6 +2,7 @@ const {
     emailActionsEnum:
     {
         AUTH,
+        CREATE_ADMIN,
         DELETED_BY_ADMIN,
         DELETED_BY_USER,
         FORGOT_PASSWORD,
@@ -14,6 +15,10 @@ module.exports = {
     [AUTH]: {
         templateName: 'auth',
         subject: 'Logged in'
+    },
+    [CREATE_ADMIN]: {
+        templateName: CREATE_ADMIN,
+        subject: 'Create account'
     },
     [DELETED_BY_ADMIN]: {
         templateName: 'deletedByAdmin',

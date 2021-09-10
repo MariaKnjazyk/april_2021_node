@@ -1,4 +1,4 @@
 module.exports = {
-    promicify: require('./promisify'),
+    superAdminUtil: require('./superAdmin.util'),
     userUtil: require('./user.util')
 };

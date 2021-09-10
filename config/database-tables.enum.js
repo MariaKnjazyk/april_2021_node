@@ -1,4 +1,5 @@
 module.exports = {
+    ACT_TOKEN: 'actToken',
     CAR: 'car',
     CHANGE_PASS: 'changePass',
     INACTIVE_ACCOUNT: 'inactiveAccount',

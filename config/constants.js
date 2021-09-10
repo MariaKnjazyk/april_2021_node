@@ -12,6 +12,7 @@ module.exports = {
     SALT: 10,
     SERVICE: 'gmail',
     START_YEAR: 1950,
+    SYSTEM: 'system',
     TOKEN_TYPE_ACCESS: 'access_token',
     TOKEN_TYPE_REFRESH: 'refresh_token'
 };

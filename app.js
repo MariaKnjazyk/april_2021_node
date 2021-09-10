@@ -5,10 +5,12 @@ require('dotenv').config();
 
 const { errorMessage, statusCodes, variables: { PORT, MONG_CONNECT } } = require('./config');
 const {
+    adminRouter,
     authRouter,
     carRouter,
     userRouter
 } = require('./routers');
+const { superAdminUtil } = require('./utils');
 
 const app = express();
 
@@ -17,11 +19,20 @@ mongoose.connect(MONG_CONNECT);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
 app.use('/cars', carRouter);
 app.use('/users', userRouter);
 app.use('*', _notFoundError);
 app.use(_mainErrorHandler);
+
+(async () => {
+    try {
+        await superAdminUtil.checkCreateSuperAdmin();
+    } catch (e) {
+        console.log(e);
+    }
+})();
 
 app.listen(PORT, () => {
     console.log('App listen', PORT);

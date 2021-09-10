@@ -2,7 +2,8 @@ const {
     constants: { AUTH, NEED_ITEM },
     dataIn: { BODY },
     errorMessage,
-    statusCodes
+    statusCodes,
+    userRolesEnum: { USER }
 } = require('../config');
 const { ErrorHandler } = require('../errors');
 const { User } = require('../dataBase');
@@ -13,9 +14,11 @@ module.exports = {
         try {
             const { loginUser, user } = req;
 
-            if (loginUser._id.toString() === user._id.toString()) {
-                req.deletedByUser = true;
-                return next();
+            if (user) {
+                if (loginUser._id.toString() === user._id.toString()) {
+                    req.deletedByUser = true;
+                    return next();
+                }
             }
 
             if (!rolesArr.length) return next();
@@ -36,6 +39,24 @@ module.exports = {
 
             if (loginUser._id.toString() !== user._id.toString()) {
                 throw new ErrorHandler(statusCodes.FORBIDDEN, errorMessage.FORBIDDEN);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUserRoleForCreate: (rolesArr = []) => (req, res, next) => {
+        try {
+            let { role } = req.body;
+
+            if (!role) role = USER;
+
+            if (!rolesArr.length) return next();
+
+            if (!rolesArr.includes(role)) {
+                throw new ErrorHandler(statusCodes.BAD_REQUEST, errorMessage.WRONG_ROLE);
             }
 
             next();

@@ -6,7 +6,7 @@ const {
     dbFiled,
     destiny,
     paramName,
-    userRolesEnum: { ADMIN }
+    userRolesEnum: { ADMIN, SUPER_ADMIN, USER }
 } = require('../config');
 const { userController } = require('../controllers');
 const { authMiddleware, userMiddleware } = require('../middlewares');
@@ -19,6 +19,7 @@ router.get(
 router.post(
     '/',
     userMiddleware.validateDataDynamic(destiny.user.CREATE_USER),
+    userMiddleware.checkUserRoleForCreate([USER]),
     userMiddleware.getUserByDynamicParam(paramName.user.EMAIL),
     userMiddleware.isUserPresent(!NEED_ITEM),
     userController.createUser
@@ -33,7 +34,10 @@ router.delete(
     authMiddleware.validateToken(),
     userMiddleware.getUserByDynamicParam(paramName.user.ID, dataIn.PARAMS, dbFiled._ID),
     userMiddleware.isUserPresent(),
-    userMiddleware.checkUserRoleAccess([ADMIN]),
+    userMiddleware.checkUserRoleAccess([
+        ADMIN,
+        SUPER_ADMIN
+    ]),
     userController.deleteUser
 );
 router.get(

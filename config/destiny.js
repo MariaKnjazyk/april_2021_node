@@ -10,6 +10,7 @@ module.exports = {
         CHANGE_PASSWORD_FORGOT: 'changePasswordForgot',
         CHANGE_PASSWORD_FORGOT_USER: 'changePasswordForgotUser',
         CHANGE_PASSWORD_RESET: 'changePasswordReset',
+        CREATE_BY_ADMIN: 'createByAdmin',
         CREATE_USER: 'createUser',
         UPDATE_OR_FIND_USER: 'updateOrFindUser',
         USER_ID: 'userId'

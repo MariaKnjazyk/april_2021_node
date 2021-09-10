@@ -1,6 +1,7 @@
 const { model, Schema } = require('mongoose');
 
 const { databaseTableEnum: { USER }, userRolesEnum } = require('../config');
+const { passwordService } = require('../services');
 
 const userSchema = new Schema({
     email: {
@@ -28,5 +29,13 @@ const userSchema = new Schema({
         type: String
     }
 }, { timestamps: true });
+
+userSchema.statics = {
+    async createWithHashPassword(userObject) {
+        const hashPassword = await passwordService.hash(userObject.password);
+
+        return this.create({ ...userObject, password: hashPassword });
+    }
+};
 
 module.exports = model(USER, userSchema);
