@@ -40,6 +40,8 @@ const createByAdmin = async (name, email, role, creatorName = SYSTEM) => {
             activeTokenURL: FRONTEND_URL_PASSWORD + QUERY_ACTION_TOKEN + action_token
         }
     );
+
+    return user;
 };
 
 const checkCreateSuperAdmin = async () => {

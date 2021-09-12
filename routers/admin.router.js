@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { authMiddleware, userMiddleware } = require('../middlewares');
+const { authMiddleware, fileMiddlewares, userMiddleware } = require('../middlewares');
 const { adminController } = require('../controllers');
 const {
     constants: { NEED_ITEM },
@@ -12,6 +12,7 @@ const {
 router.post(
     '/create',
     userMiddleware.validateDataDynamic(destiny.user.CREATE_BY_ADMIN),
+    fileMiddlewares.checkAvatar,
     authMiddleware.validateToken(),
     userMiddleware.checkUserRoleAccess([
         ADMIN,

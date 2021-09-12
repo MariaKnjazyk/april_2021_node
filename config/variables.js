@@ -1,6 +1,10 @@
 module.exports = {
     ACCESS_SECRET_KEY: process.env.ACCESS_SECRET_KEY || 'Secret',
     ACTIVATE_ACCOUNT_SECRET_KEY: process.env.ACTIVATE_ACCOUNT_SECRET_KEY || 'Word',
+    AWS_S3_NAME: process.env.AWS_S3_NAME || 'owu-mkn-bucket',
+    AWS_S3_REGION: process.env.AWS_S3_REGION || 'owu-user',
+    AWS_S3_ACCESS_KEY: process.env.AWS_S3_ACCESS_KEY || '',
+    AWS_S3_SECRET_KEY: process.env.AWS_S3_SECRET_KEY || '',
     EMAIL_SUPER_ADMIN: process.env.EMAIL_SUPER_ADMIN || 'mashaknjazyk@gmail.com',
     FORGOT_PASSWORD_SECRET_KEY: process.env.FORGOT_PASSWORD_SECRET_KEY || 'SuperWord',
     FRONTEND_URL: process.env.FRONTEND_URL || 'https://stackoverflow.com',
