@@ -6,6 +6,7 @@ const {
         DELETED_BY_ADMIN,
         DELETED_BY_USER,
         FORGOT_PASSWORD,
+        NOT_ACTIVE,
         UPDATE,
         WELCOME
     }
@@ -31,6 +32,10 @@ module.exports = {
     [FORGOT_PASSWORD]: {
         templateName: 'forgotPassword',
         subject: 'Are you forgot your password?'
+    },
+    [NOT_ACTIVE]: {
+        templateName: 'notActive.pug',
+        subject: 'Have you forgotten us?'
     },
     [WELCOME]: {
         templateName: 'welcome',
