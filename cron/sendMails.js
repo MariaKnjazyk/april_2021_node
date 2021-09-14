@@ -3,14 +3,14 @@ const utc = require('dayjs/plugin/utc');
 
 dayjs.extend(utc);
 
-const { emailActionsEnum } = require('../config');
+const { constants: { CRON_UNIT }, emailActionsEnum } = require('../config');
 const { emailService } = require('../services');
 const { OAuth, User } = require('../dataBase');
 
 module.exports = async () => {
-    const period = dayjs.utc().subtract(10, 'days');
+    const activePeriod = dayjs.utc().subtract(10, CRON_UNIT.DAYS);
 
-    const activeUsers = await OAuth.find({ createdAt: { $gte: period } });
+    const activeUsers = await OAuth.find({ createdAt: { $gte: activePeriod } });
 
     const users = await User.find();
 

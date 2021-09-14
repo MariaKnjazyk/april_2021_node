@@ -7,7 +7,12 @@ const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-const { errorMessage, statusCodes, variables: { ALLOWED_ORIGIN, PORT, MONG_CONNECT } } = require('./config');
+const {
+    constants: { RATE_LIMIT },
+    errorMessage,
+    statusCodes,
+    variables: { ALLOWED_ORIGIN, PORT, MONG_CONNECT }
+} = require('./config');
 const {
     adminRouter,
     authRouter,
@@ -24,8 +29,8 @@ mongoose.connect(MONG_CONNECT);
 
 app.use(cors({ origin: _configureCors }));
 app.use(rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 1000
+    windowMs: RATE_LIMIT.WINDOW_MS,
+    max: RATE_LIMIT.MAX
 }));
 app.use(helmet());
 
@@ -79,7 +84,7 @@ function _configureCors(origin, callback) {
     }
 
     if (!whiteList.includes(origin)) {
-        return callback(new ErrorHandler(statusCodes.FORBIDDEN, 'CORS not allowed'), false);
+        return callback(new ErrorHandler(statusCodes.FORBIDDEN, errorMessage.CORS_NOT_ALLOWED), false);
     }
 
     return callback(null, true);

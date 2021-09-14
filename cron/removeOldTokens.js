@@ -3,10 +3,11 @@ const utc = require('dayjs/plugin/utc');
 
 dayjs.extend(utc);
 
+const { constants: { CRON_UNIT } } = require('../config');
 const { OAuth, ActToken } = require('../dataBase');
 
 module.exports = async () => {
-    const previousMonth = dayjs.utc('2021-09-15').subtract(1, 'month');
+    const previousMonth = dayjs.utc().subtract(1, CRON_UNIT.MONTH);
 
     await OAuth.deleteMany({ createdAt: { $lte: previousMonth } });
 

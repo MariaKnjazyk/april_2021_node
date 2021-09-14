@@ -1,5 +1,6 @@
 module.exports = {
     ACCOUNT_IS_NOT_ACTIVATED: 'account is not activated',
+    CORS_NOT_ALLOWED: 'CORS not allowed',
     EXIST_EMAIL: 'email is already exist',
     FILE_TOO_BIG: 'file is too big',
     FORBIDDEN: 'forbidden',
