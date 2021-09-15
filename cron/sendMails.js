@@ -10,12 +10,15 @@ const { OAuth, User } = require('../dataBase');
 module.exports = async () => {
     const activePeriod = dayjs.utc().subtract(10, CRON_UNIT.DAYS);
 
-    const activeUsers = await OAuth.find({ createdAt: { $gte: activePeriod } });
+    const activeTokenUsers = await OAuth.find({ createdAt: { $gte: activePeriod } });
 
-    const users = await User.find();
+    const activeUsersId = [];
+    activeTokenUsers.forEach((item) => activeUsersId.push(item.user._id));
+
+    const users = await User.find({ _id: { $nin: activeUsersId } });
 
     await Promise.all(users.map(async (user) => {
-        const isActive = activeUsers.some((actUser) => user._id.toString === actUser._id.toString());
+        const isActive = activeTokenUsers.some((actUser) => user._id.toString === actUser._id.toString());
 
         if (!isActive) {
             await emailService.sendMail(
