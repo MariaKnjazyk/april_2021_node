@@ -21,5 +21,8 @@ const OAuthSchema = new Schema({
 OAuthSchema.pre('findOne', function() {
     this.populate(USER);
 });
+OAuthSchema.pre('find', function() {
+    this.populate(USER);
+});
 
 module.exports = model(OAuth, OAuthSchema);
