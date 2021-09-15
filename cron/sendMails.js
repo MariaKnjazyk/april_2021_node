@@ -14,7 +14,7 @@ module.exports = async () => {
 
     const users = await User.find();
 
-    for await (const user of users) {
+    await Promise.all(users.map(async (user) => {
         const isActive = activeUsers.some((actUser) => user._id.toString === actUser._id.toString());
 
         if (!isActive) {
@@ -24,5 +24,5 @@ module.exports = async () => {
                 { userName: user.name }
             );
         }
-    }
+    }));
 };
