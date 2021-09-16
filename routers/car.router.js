@@ -11,7 +11,7 @@ const { carMiddleware } = require('../middlewares');
 
 router.get(
     '/',
-    carMiddleware.validateDataDynamic(destiny.car.UPDATE_OR_FIND_CAR, dataIn.QUERY),
+    carMiddleware.validateDataDynamic(destiny.car.FIND_CAR, dataIn.QUERY),
     carController.getCars
 );
 router.post(
@@ -38,7 +38,7 @@ router.get(
 );
 router.put(
     '/:carId',
-    carMiddleware.validateDataDynamic(destiny.car.UPDATE_OR_FIND_CAR),
+    carMiddleware.validateDataDynamic(destiny.car.UPDATE_CAR),
     carMiddleware.getCarByDynamicParam(paramName.car.ID, dataIn.PARAMS, dbFiled._ID),
     carMiddleware.isCarPresent,
     carController.updateCar

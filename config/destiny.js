@@ -2,7 +2,8 @@ module.exports = {
     car: {
         CAR_ID: 'carId',
         CREATE_CAR: 'createCar',
-        UPDATE_OR_FIND_CAR: 'updateOrFindCar'
+        FIND_CAR: 'findCar',
+        UPDATE_CAR: 'updateCar'
     },
 
     user: {
@@ -12,7 +13,8 @@ module.exports = {
         CHANGE_PASSWORD_RESET: 'changePasswordReset',
         CREATE_BY_ADMIN: 'createByAdmin',
         CREATE_USER: 'createUser',
-        UPDATE_OR_FIND_USER: 'updateOrFindUser',
+        FIND_USER: 'find',
+        UPDATE_USER: 'update',
         USER_ID: 'userId'
     }
 };

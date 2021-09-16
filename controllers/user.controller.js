@@ -1,4 +1,9 @@
-const { emailService, jwtService, s3Service } = require('../services');
+const {
+    emailService,
+    jwtService,
+    s3Service,
+    userService
+} = require('../services');
 const {
     actionEnum: { ACTIVATE_ACCOUNT },
     constants: { QUERY_ACTION_TOKEN },
@@ -73,11 +78,9 @@ module.exports = {
 
     getUsers: async (req, res, next) => {
         try {
-            const users = await User.find(req.query);
+            const response = await userService.getAll(req.query);
 
-            const usersToReturn = users.map((user) => userUtil.userNormalizator(user));
-
-            res.json(usersToReturn);
+            res.json(response);
         } catch (e) {
             next(e);
         }

@@ -1,11 +1,15 @@
 const { model, Schema } = require('mongoose');
 
 const { databaseTableEnum: { USER }, userRolesEnum } = require('../config');
-const { passwordService } = require('../services');
+const passwordService = require('../services/password.service');
 
 const userSchema = new Schema({
     avatar: {
         type: String
+    },
+
+    born_year: {
+        type: Number,
     },
 
     email: {

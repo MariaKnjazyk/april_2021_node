@@ -1,4 +1,5 @@
 const { Car } = require('../dataBase');
+const { carService } = require('../services');
 const { statusCodes } = require('../config');
 
 module.exports = {
@@ -26,9 +27,9 @@ module.exports = {
 
     getCars: async (req, res, next) => {
         try {
-            const cars = await Car.find(req.query);
+            const response = await carService.getAll(req.query);
 
-            res.json(cars);
+            res.json(response);
         } catch (e) {
             next(e);
         }

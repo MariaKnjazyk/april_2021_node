@@ -1,6 +1,15 @@
 const Joi = require('joi');
 
-const { constants: { EMAIL_REGEXP, ID_REGEXP, PASSWORD_REGEXP }, userRolesEnum } = require('../config');
+const {
+    constants: {
+        CURRENT_YEAR,
+        EMAIL_REGEXP,
+        ID_REGEXP,
+        PASSWORD_REGEXP
+    },
+    orderByEnum,
+    userRolesEnum
+} = require('../config');
 
 const authUser = Joi.object({
     email: Joi.string().trim().regex(EMAIL_REGEXP).required(),
@@ -21,6 +30,7 @@ const changePasswordReset = Joi.object({
 });
 
 const createByAdmin = Joi.object({
+    born_year: Joi.number().integer().min(CURRENT_YEAR - 120).max(CURRENT_YEAR - 6),
     email: Joi.string().trim().regex(EMAIL_REGEXP).required(),
     name: Joi.string().alphanum().trim().required()
         .min(2)
@@ -29,6 +39,7 @@ const createByAdmin = Joi.object({
 });
 
 const createUser = Joi.object({
+    born_year: Joi.number().integer().min(CURRENT_YEAR - 120).max(CURRENT_YEAR - 6),
     email: Joi.string().trim().regex(EMAIL_REGEXP).required(),
     name: Joi.string().alphanum().trim().required()
         .min(2)
@@ -37,12 +48,27 @@ const createUser = Joi.object({
     role: Joi.string().valid(...Object.values(userRolesEnum))
 });
 
-const updateOrFindUser = Joi.object({
+const update = Joi.object({
+    born_year: Joi.number().integer().min(CURRENT_YEAR - 120).max(CURRENT_YEAR - 6),
     email: Joi.string().trim().regex(EMAIL_REGEXP),
     name: Joi.string().trim().alphanum()
         .min(2)
         .max(30),
-    role: Joi.string().valid(...Object.values(userRolesEnum))
+    role: Joi.string().valid(...Object.values(userRolesEnum)),
+});
+
+const find = Joi.object({
+    born_year_from: Joi.number().integer().min(CURRENT_YEAR - 120).max(CURRENT_YEAR - 6),
+    born_year_to: Joi.number().integer().min(CURRENT_YEAR - 120).max(CURRENT_YEAR - 6),
+    email: Joi.string().trim().regex(EMAIL_REGEXP),
+    name: Joi.string().trim().alphanum()
+        .min(2)
+        .max(30),
+    page: Joi.number().integer().min(1),
+    perPage: Joi.number().integer().min(1),
+    role: Joi.string().valid(...Object.values(userRolesEnum)),
+    order: Joi.string().valid(...Object.values(orderByEnum)),
+    sortBy: Joi.string()
 });
 
 const userId = Joi.object({
@@ -56,6 +82,7 @@ module.exports = {
     changePasswordReset,
     createByAdmin,
     createUser,
-    updateOrFindUser,
+    find,
+    update,
     userId
 };

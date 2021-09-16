@@ -4,6 +4,7 @@ const expressFileUpload = require('express-fileupload');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const swaggerUI = require('swagger-ui-express');
 
 require('dotenv').config();
 
@@ -22,6 +23,7 @@ const {
 const cronJobs = require('./cron');
 const { ErrorHandler } = require('./errors');
 const { superAdminUtil } = require('./utils');
+const swaggerJson = require('./docs/swagger.json');
 
 const app = express();
 
@@ -43,6 +45,8 @@ if (process.env.NODE_ENV === 'dev') {
     const morgan = require('morgan');
     app.use(morgan('dev'));
 }
+
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerJson));
 
 app.use('/admin', adminRouter);
 app.use('/auth', authRouter);

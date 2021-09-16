@@ -7,6 +7,7 @@ module.exports = {
     destiny: require('./destiny'),
     emailActionsEnum: require('./emailActions.enum'),
     errorMessage: require('./error.message'),
+    orderByEnum: require('./orderBy.enum'),
     paramName: require('./paramName'),
     statusCodes: require('./status-codes'),
     userRolesEnum: require('./user-roles.enum'),
