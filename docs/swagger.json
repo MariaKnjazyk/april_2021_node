@@ -18,7 +18,6 @@
             "name": "perPage",
             "in": "query",
             "description": "How many items will be showed in one page",
-            "required": false,
             "default": 20,
             "type": "number"
           },
@@ -26,7 +25,6 @@
             "name": "page",
             "in": "query",
             "description": "page number",
-            "required": false,
             "default": 1,
             "type": "number"
           },
@@ -34,7 +32,6 @@
             "name": "born_year_from",
             "in": "query",
             "description": "born year from",
-            "required": false,
             "default": 1980,
             "type": "number"
           },
@@ -42,7 +39,6 @@
             "name": "born_year_to",
             "in": "query",
             "description": "born year to",
-            "required": false,
             "default": 2000,
             "type": "number"
           },
@@ -50,7 +46,6 @@
             "name": "name",
             "in": "query",
             "description": "customer name",
-            "required": false,
             "default": "Maria",
             "type": "string"
           },
@@ -58,7 +53,6 @@
             "name": "email",
             "in": "query",
             "description": "customer email",
-            "required": false,
             "default": "maria@test.com",
             "type": "string"
           },
@@ -66,7 +60,6 @@
             "name": "role",
             "in": "query",
             "description": "customer role",
-            "required": false,
             "default": "user",
             "type": "array",
             "enum": ["user", "admin", "superAdmin"],
@@ -76,7 +69,6 @@
             "name": "order",
             "in": "query",
             "description": "order",
-            "required": false,
             "default": "asc",
             "type": "array",
             "enum": ["asc", "desc"]
@@ -85,7 +77,6 @@
             "name": "sortBy",
             "in": "query",
             "description": "sort By",
-            "required": false,
             "default": "createdAt",
             "type": "string"
           }
@@ -143,7 +134,6 @@
             "name": "role",
             "in": "formData",
             "description": "user role",
-            "required": false,
             "default": "user",
             "type": "string"
           },
